@@ -1,0 +1,7 @@
+#Wed Dec 21 17:38:38 EST 2016
+base.0=/Users/weidong/AndroidStudioProjects/MSBIC_Project1/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_5eefc9172daf5c2d29f71d26b6bad4608b917b1b
+renamed.1=classes.dex
+renamed.0=classes2.dex
+file.1=/Users/weidong/AndroidStudioProjects/MSBIC_Project1/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_bb4a7277c86e1f7d3b107f1ae2681eaa95c12c56/classes.dex
+base.1=/Users/weidong/AndroidStudioProjects/MSBIC_Project1/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_bb4a7277c86e1f7d3b107f1ae2681eaa95c12c56
+file.0=/Users/weidong/AndroidStudioProjects/MSBIC_Project1/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_5eefc9172daf5c2d29f71d26b6bad4608b917b1b/classes.dex
