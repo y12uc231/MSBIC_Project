@@ -7,4 +7,4 @@ The team memebers are as follows:-
 3. Hugo 
 4. Weidong Yuan
 
-Stay Tuned! We have something awesome comming soon!
+Stay Tuned! We have something awesome coming soon!
