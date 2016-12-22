@@ -27,7 +27,7 @@ public class DropdownListView extends ListView implements OnScrollListener {
 	private final static int DONE = 3;
 	private final static int LOADING = 4;
 
-	// 实际的padding的距离与界面上偏移距离的比例
+
 	private final static int RATIO = 3;
 
 	private LayoutInflater inflater;
@@ -40,7 +40,7 @@ public class DropdownListView extends ListView implements OnScrollListener {
 //	private RotateAnimation animation;
 //	private RotateAnimation reverseAnimation;
 
-	// 用于保证startY的值在一个完整的touch事件中只被记录一次
+
 	private boolean isRecored;
 
 	private int headContentWidth;
@@ -105,7 +105,7 @@ public class DropdownListView extends ListView implements OnScrollListener {
 
 	public void onScrollStateChanged(AbsListView arg0, int scrollState) {
 		if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
-			// 判断滚动到底部
+
 
 		}
 	}
@@ -126,7 +126,7 @@ public class DropdownListView extends ListView implements OnScrollListener {
 
 				if (state != REFRESHING && state != LOADING) {
 					if (state == DONE) {
-						// 什么都不做
+
 					}
 					if (state == PULL_To_REFRESH) {
 						state = DONE;
@@ -160,14 +160,12 @@ public class DropdownListView extends ListView implements OnScrollListener {
 
 				if (state != REFRESHING && isRecored && state != LOADING) {
 
-					// 保证在设置padding的过程中，当前的位置一直是在head，否则如果当列表超出屏幕的话，当在上推的时候，列表会同时进行滚动
 
-					// 可以松手去刷新了
 					if (state == RELEASE_To_REFRESH) {
 
 						setSelection(0);
 
-						// 往上推了，推到了屏幕足够掩盖head的程度，但是还没有推到全部掩盖的地步
+
 						if (((tempY - startY) / RATIO < headContentHeight)
 								&& (tempY - startY) > 0) {
 							state = PULL_To_REFRESH;
@@ -175,24 +173,24 @@ public class DropdownListView extends ListView implements OnScrollListener {
 
 							Log.v(TAG, "由松开刷新状态转变到下拉刷新状态");
 						}
-						// 一下子推到顶了
+
 						else if (tempY - startY <= 0) {
 							state = DONE;
 							changeHeaderViewByState();
 
 							Log.v(TAG, "由松开刷新状态转变到done状态");
 						}
-						// 往下拉了，或者还没有上推到屏幕顶部掩盖head的地步
+
 						else {
-							// 不用进行特别的操作，只用更新paddingTop的值就行了
+
 						}
 					}
-					// 还没有到达显示松开刷新的时候,DONE或者是PULL_To_REFRESH状态
+
 					if (state == PULL_To_REFRESH) {
 
 						setSelection(0);
 
-						// 下拉到可以进入RELEASE_TO_REFRESH的状态
+
 						if ((tempY - startY) / RATIO >= headContentHeight) {
 							state = RELEASE_To_REFRESH;
 							isBack = true;
@@ -200,7 +198,7 @@ public class DropdownListView extends ListView implements OnScrollListener {
 
 							Log.v(TAG, "由done或者下拉刷新状态转变到松开刷新");
 						}
-						// 上推到顶了
+
 						else if (tempY - startY <= 0) {
 							state = DONE;
 							changeHeaderViewByState();
@@ -209,7 +207,7 @@ public class DropdownListView extends ListView implements OnScrollListener {
 						}
 					}
 
-					// done状态下
+
 					if (state == DONE) {
 						if (tempY - startY > 0) {
 							state = PULL_To_REFRESH;
@@ -217,13 +215,13 @@ public class DropdownListView extends ListView implements OnScrollListener {
 						}
 					}
 
-					// 更新headView的size
+
 					if (state == PULL_To_REFRESH) {
 						headView.setPadding(0, -1 * headContentHeight
 								+ (tempY - startY) / RATIO, 0, 0);
 					}
 
-					// 更新headView的paddingTop
+
 					if (state == RELEASE_To_REFRESH) {
 						headView.setPadding(0, (tempY - startY) / RATIO
 								- headContentHeight, 0, 0);
@@ -237,7 +235,7 @@ public class DropdownListView extends ListView implements OnScrollListener {
 		return super.onTouchEvent(event);
 	}
 
-	// 当状态改变时候，调用该方法，以更新界面
+	//refresh the interface when the status changes
 	private void changeHeaderViewByState() {
 		switch (state) {
 		case RELEASE_To_REFRESH:
@@ -247,7 +245,7 @@ public class DropdownListView extends ListView implements OnScrollListener {
 			break;
 		case PULL_To_REFRESH:
 			progressBar.setVisibility(View.VISIBLE);
-			// 是由RELEASE_To_REFRESH状态转变来的
+
 			if (isBack) {
 				isBack = false;
 
@@ -299,7 +297,7 @@ public class DropdownListView extends ListView implements OnScrollListener {
 		}
 	}
 
-	// 此方法直接照搬自网络上的一个下拉刷新的demo，此处是“估计”headView的width以及height
+
 	private void measureView(View child) {
 		ViewGroup.LayoutParams p = child.getLayoutParams();
 		if (p == null) {

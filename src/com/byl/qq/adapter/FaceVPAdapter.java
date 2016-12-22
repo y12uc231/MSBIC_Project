@@ -9,7 +9,7 @@ import android.view.View;
 
 public class FaceVPAdapter extends PagerAdapter {
 
-	// 界面列表
+	// the list of the interfaces
 	private List<View> views;
 
 	public FaceVPAdapter(List<View> views) {
@@ -35,7 +35,7 @@ public class FaceVPAdapter extends PagerAdapter {
 		return 0;
 	}
 
-	// 初始化arg1位置的界面
+	// initialize the interface on the location arg1
 	@Override
 	public Object instantiateItem(View arg0, int arg1) {
 		((ViewPager) arg0).addView(views.get(arg1), 0);
@@ -43,7 +43,7 @@ public class FaceVPAdapter extends PagerAdapter {
 		return views.get(arg1);
 	}
 
-	// 判断是否由对象生成界
+
 	@Override
 	public boolean isViewFromObject(View arg0, Object arg1) {
 		return (arg0 == arg1);
