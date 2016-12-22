@@ -58,8 +58,8 @@ public class MainActivity extends Activity implements OnClickListener,OnRefreshL
 	private ChatLVAdapter mLvAdapter;
 	
 	private LinearLayout chat_face_container;
-	private ImageView image_face;//表情图标
-	// 7列3行
+	private ImageView image_face;//stickers icon
+	// 7 columns 3 rows
 	private int columns = 6;
 	private int rows = 4;
 	private List<View> views = new ArrayList<View>();
@@ -67,32 +67,32 @@ public class MainActivity extends Activity implements OnClickListener,OnRefreshL
 	private LinkedList<ChatInfo> infos = new LinkedList<ChatInfo>();
 	private SimpleDateFormat sd;
 	
-	private String reply="";//模拟回复
+	private String reply="";//reply string
 
 	@SuppressLint("SimpleDateFormat")
 	private void initViews() {
 		mListView = (DropdownListView) findViewById(R.id.message_chat_listview);
 		sd=new SimpleDateFormat("MM-dd HH:mm");
-		//模拟收到信息
-		infos.add(getChatInfoFrom("你好啊！"));
-		infos.add(getChatInfoFrom("认识你很高兴#[face/png/f_static_018.png]#"));
+		//pretend receiving some message
+		infos.add(getChatInfoFrom("Hello！"));
+		infos.add(getChatInfoFrom("Nice to meet you#[face/png/f_static_018.png]#"));
 		mLvAdapter = new ChatLVAdapter(this, infos);
 		mListView.setAdapter(mLvAdapter);
-		//表情图标
+		//sticker
 		image_face=(ImageView) findViewById(R.id.image_face);
-		//表情布局
+		//stickers layout
 		chat_face_container=(LinearLayout) findViewById(R.id.chat_face_container);
 		mViewPager = (ViewPager) findViewById(R.id.face_viewpager);
 		mViewPager.setOnPageChangeListener(new PageChange());
-		//表情下小圆点
+
 		mDotsLayout = (LinearLayout) findViewById(R.id.face_dots_container);
 		input = (MyEditText) findViewById(R.id.input_sms);
 		input.setOnClickListener(this);
 		send = (Button) findViewById(R.id.send_sms);
 		InitViewPager();
-		//表情按钮
+		//stickers button
 		image_face.setOnClickListener(this);
-		// 发送
+		//send
 		send.setOnClickListener(this);
 		
 		mListView.setOnRefreshListenerHead(this);
@@ -113,20 +113,20 @@ public class MainActivity extends Activity implements OnClickListener,OnRefreshL
 	@Override
 	public void onClick(View arg0) {
 		switch (arg0.getId()) {
-		case R.id.input_sms://输入框
+		case R.id.input_sms://input text area
 			if(chat_face_container.getVisibility()==View.VISIBLE){
 				chat_face_container.setVisibility(View.GONE);
 			}
 			break;
-		case R.id.image_face://表情
-			hideSoftInputView();//隐藏软键盘
+		case R.id.image_face://sticker
+			hideSoftInputView();//hide soft keyboard
 			if(chat_face_container.getVisibility()==View.GONE){
 				chat_face_container.setVisibility(View.VISIBLE);
 			}else{
 				chat_face_container.setVisibility(View.GONE);
 			}
 			break;
-		case R.id.send_sms://发送
+		case R.id.send_sms://send
 			reply=input.getText().toString();
 			if (!TextUtils.isEmpty(reply)) {
 				infos.add(getChatInfoTo(reply));
@@ -152,10 +152,10 @@ public class MainActivity extends Activity implements OnClickListener,OnRefreshL
 	}
 
 	/*
-	 * 初始表情 *
+	 * initialize stickers *
 	 */
 	private void InitViewPager() {
-		// 获取页数
+		// get the number of pages
 		for (int i = 0; i < getPagerCount(); i++) {
 			views.add(viewPagerItem(i));
 			LayoutParams params = new LayoutParams(16, 16);
@@ -171,7 +171,7 @@ public class MainActivity extends Activity implements OnClickListener,OnRefreshL
 		View layout = inflater.inflate(R.layout.face_gridview, null);//表情布局
 		GridView gridview = (GridView) layout.findViewById(R.id.chart_face_gv);
 		/**
-		 * 注：因为每一页末尾都有一个删除图标，所以每一页的实际表情columns *　rows　－　1; 空出最后一个位置给删除图标
+		 * something about the interface changing
 		 * */
 		List<String> subList = new ArrayList<String>();
 		subList.addAll(staticFacesList
@@ -181,19 +181,19 @@ public class MainActivity extends Activity implements OnClickListener,OnRefreshL
 								* rows - 1)
 								* (position + 1)));
 		/**
-		 * 末尾添加删除图标
+		 * add the 'delete' icon at the end
 		 * */
 		subList.add("emotion_del_normal.png");
 		FaceGVAdapter mGvAdapter = new FaceGVAdapter(subList, this);
 		gridview.setAdapter(mGvAdapter);
 		gridview.setNumColumns(columns);
-		// 单击表情执行的操作
+		// the operation after you click the sticker
 		gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
 				try {
 					String png = ((TextView) ((LinearLayout) view).getChildAt(1)).getText().toString();
-					if (!png.contains("emotion_del_normal")) {// 如果不是删除图标
+					if (!png.contains("emotion_del_normal")) {
 						insert(getFace(png));
 					} else {
 						delete();
@@ -210,11 +210,7 @@ public class MainActivity extends Activity implements OnClickListener,OnRefreshL
 	private SpannableStringBuilder getFace(String png) {
 		SpannableStringBuilder sb = new SpannableStringBuilder();
 		try {
-			/**
-			 * 经过测试，虽然这里tempText被替换为png显示，但是但我单击发送按钮时，获取到輸入框的内容是tempText的值而不是png
-			 * 所以这里对这个tempText值做特殊处理
-			 * 格式：#[face/png/f_static_000.png]#，以方便判斷當前圖片是哪一個
-			 * */
+
 			String tempText = "#[" + png + "]#";
 			sb.append(tempText);
 			sb.setSpan(
@@ -231,7 +227,7 @@ public class MainActivity extends Activity implements OnClickListener,OnRefreshL
 	}
 
 	/**
-	 * 向输入框里添加表情
+	 * add the stickers in the input text area
 	 * */
 	private void insert(CharSequence text) {
 		int iCursorStart = Selection.getSelectionStart((input.getText()));
@@ -244,8 +240,7 @@ public class MainActivity extends Activity implements OnClickListener,OnRefreshL
 	}
 
 	/**
-	 * 删除图标执行事件
-	 * 注：如果删除的是表情，在删除时实际删除的是tempText即图片占位的字符串，所以必需一次性删除掉tempText，才能将图片删除
+	 * icon for delete
 	 * */
 	private void delete() {
 		if (input.getText().length() != 0) {
@@ -269,9 +264,7 @@ public class MainActivity extends Activity implements OnClickListener,OnRefreshL
 		}
 	}
 
-	/**
-	 * 判断即将删除的字符串是否是图片占位字符串tempText 如果是：则讲删除整个tempText
-	 * **/
+
 	private boolean isDeletePng(int cursor) {
 		String st = "#[face/png/f_static_000.png]#";
 		String content = input.getText().toString().substring(0, cursor);
@@ -295,7 +288,7 @@ public class MainActivity extends Activity implements OnClickListener,OnRefreshL
 	}
 
 	/**
-	 * 根据表情数量以及GridView设置的行数和列数计算Pager数量
+	 * Calculate the number of pages
 	 * @return
 	 */
 	private int getPagerCount() {
@@ -305,26 +298,24 @@ public class MainActivity extends Activity implements OnClickListener,OnRefreshL
 	}
 
 	/**
-	 * 初始化表情列表staticFacesList
+	 * initialize the stickers list
 	 */
 	private void initStaticFaces() {
 		try {
 			staticFacesList = new ArrayList<String>();
 			String[] faces = getAssets().list("face/png");
-			//将Assets中的表情名称转为字符串一一添加进staticFacesList
+
 			for (int i = 0; i < faces.length; i++) {
 				staticFacesList.add(faces[i]);
 			}
-			//去掉删除图片
+
 			staticFacesList.remove("emotion_del_normal.png");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	/**
-	 * 表情页改变时，dots效果也要跟着改变
-	 * */
+
 	class PageChange implements OnPageChangeListener {
 		@Override
 		public void onPageScrollStateChanged(int arg0) {
@@ -343,7 +334,7 @@ public class MainActivity extends Activity implements OnClickListener,OnRefreshL
 	}
 
 	/**
-	 * 发送的信息
+	 * the message sent
 	 * @param message
 	 * @return
 	 */
@@ -356,7 +347,7 @@ public class MainActivity extends Activity implements OnClickListener,OnRefreshL
 	}
 	
 	/**
-	 * 接收的信息
+	 * the message received
 	 * @param message
 	 * @return
 	 */

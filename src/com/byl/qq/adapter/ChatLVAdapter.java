@@ -40,15 +40,15 @@ import com.nineoldandroids.view.ViewHelper;
 public class ChatLVAdapter extends BaseAdapter {
 	private Context mContext;
 	private List<ChatInfo> list;
-	/** 弹出的更多选择框 */
+	/** the window which is popped */
 	private PopupWindow popupWindow;
 
-	/** 复制，删除 */
+
 	private TextView copy, delete;
 
 	private LayoutInflater inflater;
 	/**
-	 * 执行动画的时间
+	 * the animation time
 	 */
 	protected long mAnimationTime = 150;
 
@@ -100,21 +100,21 @@ public class ChatLVAdapter extends BaseAdapter {
 		}
 
 		if (list.get(position).fromOrTo == 0) {
-			// 收到消息 from显示
+			// receive a message, show who send the message
 			hodler.toContainer.setVisibility(View.GONE);
 			hodler.fromContainer.setVisibility(View.VISIBLE);
 
-			// 对内容做处理
+			//Operation on the content
 			SpannableStringBuilder sb = handler(hodler.fromContent,
 					list.get(position).content);
 			hodler.fromContent.setText(sb);
 			hodler.time.setText(list.get(position).time);
 		} else {
-			// 发送消息 to显示
+			// send message, to whom
 			hodler.toContainer.setVisibility(View.VISIBLE);
 			hodler.fromContainer.setVisibility(View.GONE);
 
-			// 对内容做处理
+			//Operation on the content
 			SpannableStringBuilder sb = handler(hodler.toContent,
 					list.get(position).content);
 			hodler.toContent.setText(sb);
@@ -137,7 +137,7 @@ public class ChatLVAdapter extends BaseAdapter {
 			}
 		});
 
-		// 设置+按钮点击效果
+		// set the '+' button
 		hodler.fromContent.setOnLongClickListener(new popAction(convertView,
 				position, list.get(position).fromOrTo));
 		hodler.toContent.setOnLongClickListener(new popAction(convertView,
@@ -155,10 +155,7 @@ public class ChatLVAdapter extends BaseAdapter {
 			try {
 				String num = tempText.substring("#[face/png/f_static_".length(), tempText.length()- ".png]#".length());
 				String gif = "face/gif/f" + num + ".gif";
-				/**
-				 * 如果open这里不抛异常说明存在gif，则显示对应的gif
-				 * 否则说明gif找不到，则显示png
-				 * */
+
 				InputStream is = mContext.getAssets().open(gif);
 				sb.setSpan(new AnimatedImageSpan(new AnimatedGifDrawable(is,new AnimatedGifDrawable.UpdateListener() {
 							@Override
@@ -189,7 +186,7 @@ public class ChatLVAdapter extends BaseAdapter {
 	}
 
 	/**
-	 * 屏蔽listitem的所有事件
+	 * 屏蔽listitem的所有事件Bolock the events of listitem
 	 * */
 	@Override
 	public boolean areAllItemsEnabled() {
@@ -202,7 +199,7 @@ public class ChatLVAdapter extends BaseAdapter {
 	}
 
 	/**
-	 * 初始化弹出的pop
+	 * initialize the pop window
 	 * */
 	private void initPopWindow() {
 		View popView = inflater.inflate(R.layout.chat_item_copy_delete_menu,
@@ -217,18 +214,18 @@ public class ChatLVAdapter extends BaseAdapter {
 	}
 
 	/**
-	 * 显示popWindow
+	 * show the popped window
 	 * */
 	public void showPop(View parent, int x, int y, final View view,
 			final int position, final int fromOrTo) {
-		// 设置popwindow显示位置
+		// set the window location
 		popupWindow.showAtLocation(parent, 0, x, y);
-		// 获取popwindow焦点
+		// get the focus of the window
 		popupWindow.setFocusable(true);
-		// 设置popwindow如果点击外面区域，便关闭。
+
 		popupWindow.setOutsideTouchable(true);
-		// 为按钮绑定事件
-		// 复制
+		// bind the event for the button
+		// copy
 		copy.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -244,7 +241,7 @@ public class ChatLVAdapter extends BaseAdapter {
 				cm.setText(list.get(position).content);
 			}
 		});
-		// 删除
+		// delete
 		delete.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -272,7 +269,7 @@ public class ChatLVAdapter extends BaseAdapter {
 	}
 
 	/**
-	 * 每个ITEM中more按钮对应的点击动作
+	 * the 'more' selection of every item
 	 * */
 	public class popAction implements OnLongClickListener {
 		int position;
@@ -289,7 +286,7 @@ public class ChatLVAdapter extends BaseAdapter {
 		public boolean onLongClick(View v) {
 			// TODO Auto-generated method stub
 			int[] arrayOfInt = new int[2];
-			// 获取点击按钮的坐标
+			// get the location
 			v.getLocationOnScreen(arrayOfInt);
 			int x = arrayOfInt[0];
 			int y = arrayOfInt[1];
@@ -301,7 +298,7 @@ public class ChatLVAdapter extends BaseAdapter {
 	}
 
 	/**
-	 * item删除动画
+	 * delete the animation of item
 	 * */
 	private void rightRemoveAnimation(final View view, final int position) {
 		final Animation animation = (Animation) AnimationUtils.loadAnimation(
@@ -324,7 +321,7 @@ public class ChatLVAdapter extends BaseAdapter {
 	}
 
 	/**
-	 * item删除动画
+	 * delete the animation of the item
 	 * */
 	private void leftRemoveAnimation(final View view, final int position) {
 		final Animation animation = (Animation) AnimationUtils.loadAnimation(mContext, R.anim.chatfrom_remove_anim);
