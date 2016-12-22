@@ -1,5 +1,5 @@
 # MSBIC_Project
-This is the project contributed on the very first semester in CMU. 
+Team project for Entrepreneurial Track
 
 ### The team members are as follows:-
 1. Satyapriya Krishna
